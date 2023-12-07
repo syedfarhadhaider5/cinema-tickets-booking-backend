@@ -25,7 +25,18 @@ class UserController extends Controller
         $user->access_token =  Str::random(60);
         $user->save();
 
-        return response()->json(['user' => $user, 'message' => 'User registered successfully'], 201);
+        $createdUser = User::find($user->id);
+
+        return response()->json([
+            'user' => [
+                'id' => $createdUser->id,
+                'name' => $createdUser->name,
+                'email' => $createdUser->email,
+                'type' => $createdUser->type,
+                'access_token' => $createdUser->access_token
+            ],
+            'message' => 'User registered successfully'
+        ], 201);
     }
 
     public function login(Request $request)
